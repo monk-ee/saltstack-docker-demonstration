@@ -1,0 +1,24 @@
+FROM debian:10.3
+
+
+LABEL maintainer="lyndon.swan@tabcorp.com.au"
+
+ARG SALT_VER=3000.2
+
+USER root
+
+RUN apt-get update
+RUN apt-get -y install gnupg2 procps supervisor lsof curl
+COPY saltstack.list /etc/apt/sources.list.d/saltstack.list
+COPY SALTSTACK-GPG-KEY.pub /tmp/SALTSTACK-GPG-KEY.pub
+RUN apt-key add /tmp/SALTSTACK-GPG-KEY.pub
+RUN apt-get update
+RUN apt-get -y install salt-minion salt-ssh
+COPY supervisor.conf /etc/supervisor/supervisor.conf
+COPY salt-minion.conf /etc/supervisor/conf.d/salt-minion.conf
+COPY minion /etc/salt/minion
+
+RUN useradd -ms /bin/bash saltuser
+
+#CMD ["/bin/bash", "-c", "sleep 10000"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisor.conf"]
