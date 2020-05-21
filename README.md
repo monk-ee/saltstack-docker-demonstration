@@ -36,7 +36,10 @@ Open a browser and go to GUI; login details saltuser:saltuser
     
 ## Caveats
 
-+ Careful consideration for PKI directory will needed to ensure you dont lose all the keys on termination or respawn
++ Careful consideration for PKI directory will needed to ensure you dont lose all the keys on termination or respawn 
+    
+    VOLUME ['/srv/etc/salt/pki/'] and so on
+    
 + external cache is good - I tried the postgres one - and it tasted good
 + BEWARE - self signed certs for fun and profit
 + salt-gui MUST run on salt-master - don't ask
